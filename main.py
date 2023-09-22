@@ -1,10 +1,9 @@
-from selenium import webdriver
+import undetected_chromedriver as uc
+from undetected_chromedriver import ChromeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 from time import sleep
-import sys
 
 identifiers = {
     "views": "btn.btn-primary.rounded-0.t-views-button",
@@ -17,7 +16,10 @@ identifiers = {
 class Zefoy:
     def __init__(self, videoURL):
         self.url = videoURL
-        self.driver = webdriver.Chrome()
+        
+        options = ChromeOptions()
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        self.driver = uc.Chrome(options=options, use_subprocess=True)
 
     def main(self):
         self.driver.get("https://zefoy.com/")
@@ -38,8 +40,5 @@ class Zefoy:
             except:
                 self.driver.find_element(By.XPATH, identifiers["urlButton"]).click()
                     
-
-
-
 
 Zefoy("https://www.tiktok.com/@meepkid69/video/7048179708994800901").main()
