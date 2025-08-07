@@ -22,20 +22,29 @@ class CaptchaSolver:
 
     def solve_captcha(self, path):
         response = self.client.responses.parse(
-            model="gpt-4.1-mini",
-            input=[{
-                "role": "user",
-                "content": [
-                    {"type": "input_text", "text": ""},
-                    {
-                        "type": "input_image",
-                        "file_id": self.create_file(path),
-                    },
-                    ],
+            model="o3",
+            input=[
+                {
+                    "role": "system",
+                    "content": [
+                        {
+                            "type": "input_text",
+                            "text": "Provide the EXACT WORD spelt out in the provided image"
+                        }
+                    ]
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "input_image",
+                            "file_id": self.create_file(path),
+                        },
+                        ],
                 }
             ],
             text_format=ResponseFormat
         )
         response = response.to_dict()
-        answer = response["output"][0]["content"][0]["parsed"]["word"]
+        answer = response["output"][1]["content"][0]["parsed"]["word"]
         return answer

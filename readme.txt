@@ -1,6 +1,6 @@
 How to use
 
-1. Download the current beta version of chrome for win64 here: https://storage.googleapis.com/chrome-for-testing-public/140.0.7339.5/win64/chrome-win64.zip
+1. Download the current beta version of chrome for win64 here: https://googlechromelabs.github.io/chrome-for-testing/
 (The program will not work if you use the stable version due to extension loading being disabled in stable chrome)
 
 2. Extract the zip file and place the folder called "chrome-win64" into the same location as main.py
