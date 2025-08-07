@@ -29,7 +29,7 @@ class CaptchaSolver:
                     "content": [
                         {
                             "type": "input_text",
-                            "text": "Provide the EXACT WORD spelt out in the provided image"
+                            "text": "Provide the EXACT WORD spelt out from left to right in the provided image"
                         }
                     ]
                 },
@@ -46,5 +46,6 @@ class CaptchaSolver:
             text_format=ResponseFormat
         )
         response = response.to_dict()
+        print(response)
         answer = response["output"][1]["content"][0]["parsed"]["word"]
         return answer

@@ -31,7 +31,7 @@ class Main(CaptchaSolver):
         self.driver.get("https://www.google.com")
 
         while len(self.driver.window_handles) < 2:
-            sleep(0.5)
+            sleep(1)
 
         self.driver.switch_to.window(self.driver.window_handles[0])
         self.driver.close()
@@ -51,14 +51,18 @@ class Main(CaptchaSolver):
 
         self.driver.find_element(By.CLASS_NAME, "submit-captcha").click()
 
-        sleep(1)
+        sleep(5)
         WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "t-views-button"))).click()
-        sleep(100)
-        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "form-control.text-center.font-weight-bold.rounded-0.remove-spaces")))
-
+        sleep(5)
+        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[10]/div/form/div/input"))).send_keys(video_url)
+        sleep(5)
         while True:
-            WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable)((By.CLASS_NAME, "btn.btn-primary.rounded-0")).click()
-            sleep(10)
+            self.driver.find_element(By.XPATH, "/html/body/div[10]/div/form/div/div/button").click()
+            sleep(5)
+            try:
+                self.driver.find_element(By.CLASS_NAME, "wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2").click()
+            except Exception:
+                sleep(5)
 
 
 Main()
