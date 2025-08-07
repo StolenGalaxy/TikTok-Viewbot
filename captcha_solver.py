@@ -1,0 +1,41 @@
+from openai import OpenAI
+from pydantic import BaseModel
+from dotenv import load_dotenv
+
+
+class ResponseFormat(BaseModel):
+    word: str
+
+
+class CaptchaSolver:
+    def __init__(self):
+        load_dotenv()
+        self.client = OpenAI()
+
+    def create_file(self, path):
+        with open(path, "rb") as file_content:
+            result = self.client.files.create(
+                file=file_content,
+                purpose="vision",
+            )
+            return result.id
+
+    def solve_captcha(self, path):
+        response = self.client.responses.parse(
+            model="gpt-4.1-mini",
+            input=[{
+                "role": "user",
+                "content": [
+                    {"type": "input_text", "text": ""},
+                    {
+                        "type": "input_image",
+                        "file_id": self.create_file(path),
+                    },
+                    ],
+                }
+            ],
+            text_format=ResponseFormat
+        )
+        response = response.to_dict()
+        answer = response["output"][0]["content"][0]["parsed"]["word"]
+        return answer

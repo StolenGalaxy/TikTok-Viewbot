@@ -1,6 +1,13 @@
 from time import sleep
 import undetected_chromedriver as uc
 from undetected_chromedriver import ChromeOptions
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+from PIL import Image
+
+from captcha_solver import CaptchaSolver
 
 options = ChromeOptions()
 
@@ -14,18 +21,26 @@ options.add_experimental_option(
 )
 
 
-class Main:
+class Main(CaptchaSolver):
     def __init__(self):
+        super().__init__()
         self.driver = uc.Chrome(options=options)
 
         while len(self.driver.window_handles) < 2:
-            sleep(1)
+            sleep(0.5)
 
         self.driver.switch_to.window(self.driver.window_handles[0])
         self.driver.close()
         self.driver.switch_to.window(self.driver.window_handles[0])
         self.driver.get("https://zefoy.com")
-        sleep(10)
+
+        captcha = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
+        captcha.screenshot("testimage.png")
+        image = Image.open("testimage.png")
+        image_cropped = image.crop((0, 54, image.width, 107))
+        image_cropped.save("testimage.png")
+        answer = self.solve_captcha("testimage.png")
+        print(answer)
 
 
 Main()
