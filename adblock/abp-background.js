@@ -112,16 +112,16 @@ var ewe_api = __webpack_require__(5407);
 /*!
  * This file is part of eyeo's Anti-Circumvention Snippets module (@eyeo/snippets),
  * Copyright (C) 2006-present eyeo GmbH
- * 
+ *
  * @eyeo/snippets is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
- * 
+ *
  * @eyeo/snippets is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with @eyeo/snippets.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -146,16 +146,16 @@ callback.has = snippet => graph.has(snippet);
 /*!
  * This file is part of eyeo's Anti-Circumvention Snippets module (@eyeo/snippets),
  * Copyright (C) 2006-present eyeo GmbH
- * 
+ *
  * @eyeo/snippets is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
- * 
+ *
  * @eyeo/snippets is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with @eyeo/snippets.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -12303,7 +12303,7 @@ function start() {
   browser.runtime.onInstalled.addListener(async (details) => {
     await prefs__WEBPACK_IMPORTED_MODULE_0__/* .Prefs */ .N.untilLoaded;
     if (details.reason === "install" && !prefs__WEBPACK_IMPORTED_MODULE_0__/* .Prefs */ .N.suppress_first_run_page) {
-      openInstalledPage();
+
     }
   });
 }
@@ -30462,7 +30462,7 @@ __webpack_unused_export__ = function compileScript(scripts,
   let jsonEnv = JSON.stringify(environment);
   return `
     "use strict";
-    (() => 
+    (() =>
     {
       let scripts = ${JSON.stringify([].concat(scripts).map(parseScript))};
 
@@ -33545,12 +33545,12 @@ function runCookieBannerExperiment(
         filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.25));
         width: 150px;
       }
-      
+
       .ab-bubble-container--side {
         animation: ab-cta-pop-in--side 500ms ease 1000ms both;
         -webkit-animation: ab-cta-pop-in--side 500ms ease 1000ms both;
       }
-      
+
       .ab-bubble-container--side::after {
         content: "";
         position: absolute;
@@ -33562,12 +33562,12 @@ function runCookieBannerExperiment(
         border-bottom: 10px solid transparent;
         border-right: 23px solid #d0f2ff;
       }
-      
+
       .ab-bubble-container--top {
         animation: ab-cta-pop-in--top 500ms ease 1000ms both;
         -webkit-animation: ab-cta-pop-in--top 500ms ease 1000ms both;
       }
-      
+
       .ab-bubble-container--top::after {
         content: "";
         position: absolute;
@@ -33579,14 +33579,14 @@ function runCookieBannerExperiment(
         border-right: 10px solid transparent;
         border-top: 23px solid #d0f2ff;
       }
-      
+
       .ab-bubble-container__content{
         display: flex;
         flex-direction: column;
         align-self: stretch;
         gap: 10px;
-      } 
-      
+      }
+
       .ab-bubble-container__text {
         font-size: 16px;
         font-weight: 700;
@@ -33609,7 +33609,7 @@ function runCookieBannerExperiment(
         text-align: center;
       }
 
-      @keyframes ab-cta-pop-in--top { 
+      @keyframes ab-cta-pop-in--top {
         0% {
           opacity: 0;
           transform: translateY(50%) scale(0.25);
@@ -33619,16 +33619,16 @@ function runCookieBannerExperiment(
           transform: translateY(0) scale(1);
         }
       }
-      
-      @keyframes ab-cta-pop-in--side { 
+
+      @keyframes ab-cta-pop-in--side {
         0% {
           opacity: 0;
           transform: translateX(-50%) scale(0.25);
-        } 
+        }
         100% {
           opacity: 1;
           transform: translateX(0) scale(1);
-        } 
+        }
       }
     `;
 
@@ -56981,7 +56981,7 @@ exports.compileScript = function compileScript(scripts,
   let jsonEnv = JSON.stringify(environment);
   return `
     "use strict";
-    (() => 
+    (() =>
     {
       let scripts = ${JSON.stringify([].concat(scripts).map(parseScript))};
 
@@ -72567,7 +72567,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __nested_webpack_require_1019177__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -72581,14 +72581,14 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __nested_webpack_require_1019177__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
@@ -72601,7 +72601,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__nested_webpack_require_1019177__.g = (function() {
@@ -72613,12 +72613,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__nested_webpack_require_1019177__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -72629,7 +72629,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
 var __nested_webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
@@ -105088,7 +105088,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -105102,14 +105102,14 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -105122,7 +105122,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -105134,12 +105134,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -105150,9 +105150,9 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
-/******/ 	
+/******/
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	__webpack_require__(9973);
@@ -105181,7 +105181,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"alarms":{"clear":{"minArgs":0,"maxAr
 /******/ 	__webpack_require__(3344);
 /******/ 	__webpack_require__(1775);
 /******/ 	var __webpack_exports__ = __webpack_require__(5997);
-/******/ 	
+/******/
 /******/ })()
 ;
 //# sourceMappingURL=abp-background.js.map

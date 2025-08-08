@@ -46,6 +46,5 @@ class CaptchaSolver:
             text_format=ResponseFormat
         )
         response = response.to_dict()
-        print(response)
         answer = response["output"][1]["content"][0]["parsed"]["word"]
         return answer
