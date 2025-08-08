@@ -1,44 +1,63 @@
+from time import sleep
 import undetected_chromedriver as uc
 from undetected_chromedriver import ChromeOptions
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
+from selenium.webdriver.common.by import By
 
-identifiers = {
-    "views": "btn.btn-primary.rounded-0.t-views-button",
-    "urlBox": '//div[@class="col-sm-5 col-xs-12 p-1 container t-views-menu"]//input[@placeholder]',
-    "urlButton": '//div[@class="col-sm-5 col-xs-12 p-1 container t-views-menu"]//button',
-    "submitButton": '//div[@class="col-sm-5 col-xs-12 p-1 container t-views-menu"]//button[contains(@class, "wbutton")]'
-}
+from PIL import Image
+
+from captcha_solver import CaptchaSolver
+
+import os
+
+options = ChromeOptions()
+
+options.binary_location = r"chrome-win64\chrome.exe"
+options.add_argument("--load-extension=adblock")
+options.add_argument('--disable-notifications')
+options.add_experimental_option(
+    "prefs", {
+        "profile.default_content_setting_values.notifications": 2
+    }
+)
+
+video_url = "PUT THE TIKTOK VIDEO URL HERE"
 
 
-class Zefoy:
-    def __init__(self, videoURL):
-        self.url = videoURL
-        
-        options = ChromeOptions()
-        options.add_argument("--disable-blink-features=AutomationControlled")
-        self.driver = uc.Chrome(options=options, use_subprocess=True)
-
-    def main(self):
+class Main(CaptchaSolver):
+    def __init__(self):
+        super().__init__()
+        self.driver = uc.Chrome(options=options)
+        self.driver.get("https://google.com")
+        sleep(3)
         self.driver.get("https://zefoy.com/")
 
-        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, identifiers["views"])))
-        self.driver.find_element(By.CLASS_NAME, identifiers["views"]).click()
+        # Solve captcha
+        captcha = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
+        captcha.screenshot("temp_image.png")
+        image = Image.open("temp_image.png")
+        image_cropped = image.crop((0, 54, image.width, 107))
+        image_cropped.save("temp_image.png")
+        answer = self.solve_captcha("temp_image.png")
+        os.remove("temp_image.png")
+        print("Entering captcha:", answer)
+        captcha_box = self.driver.find_element(By.ID, "captchatoken")
+        captcha_box.send_keys(answer)
+        self.driver.find_element(By.CLASS_NAME, "submit-captcha").click()
 
-        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, identifiers["urlBox"])))
-        self.driver.find_element(By.XPATH, identifiers["urlBox"]).send_keys(self.url)
-
-        self.driver.find_element(By.XPATH, identifiers["urlButton"]).click()
-
+        sleep(2)
+        WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "t-views-button"))).click()
+        sleep(2)
+        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[10]/div/form/div/input"))).send_keys(video_url)
+        sleep(2)
         while True:
+            self.driver.find_element(By.XPATH, "/html/body/div[10]/div/form/div/div/button").click()
+            sleep(3)
             try:
-                WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, identifiers["submitButton"])))
-                sleep(1)
-                self.driver.find_element(By.XPATH, identifiers["submitButton"]).click()
-            except:
-                self.driver.find_element(By.XPATH, identifiers["urlButton"]).click()
-                    
+                self.driver.find_element(By.CLASS_NAME, "wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2").click()
+            except Exception:
+                sleep(3)
 
-Zefoy("https://www.tiktok.com/@meepkid69/video/7048179708994800901").main()
+
+Main()
