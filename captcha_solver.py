@@ -29,7 +29,7 @@ class CaptchaSolver:
                     "content": [
                         {
                             "type": "input_text",
-                            "text": "Provide the EXACT WORD spelt out from left to right in the provided image"
+                            "text": "What word is spelt out from left to right in this image, with letters alternating between the top and bottom lines?"
                         }
                     ]
                 },
