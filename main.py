@@ -22,7 +22,7 @@ options.add_experimental_option(
     }
 )
 
-video_url = "https://www.tiktok.com/@meepkid69/video/7048179708994800901"
+video_url = "PUT THE TIKTOK VIDEO URL HERE"
 
 
 class Main(CaptchaSolver):
