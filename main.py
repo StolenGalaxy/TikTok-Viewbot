@@ -26,13 +26,13 @@ video_url = "PUT THE TIKTOK VIDEO URL HERE"
 
 
 class Main(CaptchaSolver):
-    def __init__(self):
+    def __init__(self, auto_captcha: bool = True):
+        self.auto_captcha = auto_captcha
         super().__init__()
         self.driver = uc.Chrome(options=options)
         self.driver.get("https://google.com")
         sleep(3)
         self.driver.get("https://zefoy.com/")
-
         # Solve captcha
         captcha = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
         captcha.screenshot("temp_image.png")
