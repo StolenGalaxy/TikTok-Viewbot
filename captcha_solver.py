@@ -12,15 +12,16 @@ class CaptchaSolver:
         load_dotenv()
         self.client = OpenAI()
 
-    def create_file(self, path):
+    def create_file(self, path) -> str:
         with open(path, "rb") as file_content:
             result = self.client.files.create(
                 file=file_content,
                 purpose="vision",
             )
+            print(type(result.id))
             return result.id
 
-    def solve_captcha(self, path):
+    def solve_captcha(self, path) -> str:
         response = self.client.responses.parse(
             model="o3",
             input=[
