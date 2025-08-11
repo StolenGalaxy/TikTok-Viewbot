@@ -6,53 +6,62 @@ from selenium.webdriver.common.by import By
 from seleniumbase import SB
 
 from PIL import Image
+import os
 
 from captcha_solver import CaptchaSolver
 
+from random import randint
 
-import os
-
-proxy_1 = ""
-
+# Set the url to your TikTok video here
 video_url = ""
 
 
-class Main(CaptchaSolver):
-    def __init__(self, auto_captcha: bool = True, proxy: str = ""):
+class Zefoy(CaptchaSolver):
+    def __init__(self, auto_captcha: bool = False, use_proxy: bool = False):
         self.auto_captcha = auto_captcha
         super().__init__()
 
-        with SB(chromium_arg="--disable-notifications", proxy=proxy_1, uc=True, ad_block_on=True) as sb:
+        self.proxy = None
+        if use_proxy:
+            self.change_proxy()
+
+        with SB(chromium_arg="--disable-notifications", proxy=self.proxy, uc=True, binary_location=r"chrome-win64\chrome.exe", extension_dir="adblock") as sb:
+            # This is done to give the adblock extension time to install
             sb.get("https://google.com")
-            sleep(3)
+            sb.sleep(3)
             sb.get("https://zefoy.com/")
-            sleep(3)
 
             # Solve captcha
-            captcha = WebDriverWait(sb, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
-            captcha.screenshot("temp_image.png")
-            image = Image.open("temp_image.png")
-            image_cropped = image.crop((0, 54, image.width, 107))
-            image_cropped.save("temp_image.png")
-            answer = self.solve_captcha("temp_image.png")
-            os.remove("temp_image.png")
-            print("Entering captcha:", answer)
-            captcha_box = sb.find_element(By.ID, "captchatoken")
-            captcha_box.send_keys(answer)
-            sb.find_element(By.CLASS_NAME, "submit-captcha").click()
 
-            sleep(2)
-            WebDriverWait(sb, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "t-views-button"))).click()
-            sleep(2)
-            WebDriverWait(sb, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[10]/div/form/div/input"))).send_keys(video_url)
-            sleep(2)
+            if auto_captcha:
+                print("Attempting to solve captcha")
+                captcha = WebDriverWait(sb, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
+                captcha.screenshot("temp_image.png")
+                image = Image.open("temp_image.png")
+                image_cropped = image.crop((0, 54, image.width, 107))
+                image_cropped.save("temp_image.png")
+                answer = self.solve_captcha("temp_image.png")
+                os.remove("temp_image.png")
+                print("Entering captcha:", answer)
+
+                sb.send_keys("#captchatoken", answer)
+
+                sb.click(".submit-captcha")
+
+            sb.click(".t-views-button", timeout=30)
+            sb.send_keys("/html/body/div[10]/div/form/div/input", video_url, timeout=10)
             while True:
-                sb.find_element(By.XPATH, "/html/body/div[10]/div/form/div/div/button").click()
-                sleep(3)
+                sb.click("/html/body/div[10]/div/form/div/div/button")
                 try:
-                    sb.find_element(By.CLASS_NAME, "wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2").click()
+                    sb.click(".wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2")
                 except Exception:
-                    sleep(3)
+                    sb.sleep(3)
+
+    def change_proxy(self):
+
+        # You will have to configure this to set self.proxy to a proxy that you have access to, in the format USERNAME:PASSWORD:PROXY
+
+        self.proxy = f""
 
 
-Main()
+Zefoy(auto_captcha=True, use_proxy=True)

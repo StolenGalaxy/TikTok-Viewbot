@@ -18,7 +18,6 @@ class CaptchaSolver:
                 file=file_content,
                 purpose="vision",
             )
-            print(type(result.id))
             return result.id
 
     def solve_captcha(self, path) -> str:

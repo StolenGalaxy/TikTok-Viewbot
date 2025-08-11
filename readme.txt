@@ -3,8 +3,12 @@ How to use
 1. Download the current beta version of chrome for win64 here: https://googlechromelabs.github.io/chrome-for-testing/
 (The program will not work if you use the stable version due to extension loading being disabled in stable chrome)
 
-2. Extract the zip file and place the folder called "chrome-win64" (which contains chrome.exe) into the same location as main.py
+2. Extract the zip file and place the folder called "chrome-win64" into the same location as main.py
 
-3. Move the adblock folder (which you can find in the same location as this readme.txt) into the chrome-win64 folder
+If you want the captchas to be solved automatically:
+    1. Rename .env.template to .env and enter your OpenAI Api Key
+    2. Run Zefoy() with auto_captcha = True
 
-4. Run main.py
+If you want to use proxies to bypass the wait time:
+    1. You will have to edit the change_proxy() function to set self.proxy to one of your proxies
+    2. Run Zefoy() with use_proxy = True
