@@ -34,8 +34,8 @@ class Zefoy(CaptchaSolver):
             # Solve captcha
 
             if auto_captcha:
-                print("Attempting to solve captcha")
                 captcha = WebDriverWait(sb, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
+                print("Attempting to solve captcha")
                 captcha.screenshot("temp_image.png")
                 image = Image.open("temp_image.png")
                 image_cropped = image.crop((0, 54, image.width, 107))
