@@ -27,16 +27,31 @@ class Zefoy():
             if self.auto_captcha:
                 self.captcha_solver.solve_captcha(sb)
 
-            sb.click(".t-views-button", timeout=30)
-            sb.send_keys("/html/body/div[10]/div/form/div/input", video_url, timeout=10)
-            while True:
-                sb.click("/html/body/div[10]/div/form/div/div/button")
-                sb.sleep(1)
-                try:
-                    sb.click(".wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2")
-                    return
-                except Exception:
-                    sb.sleep(3)
+            if not hearts:
+                sb.click(".t-views-button", timeout=30)
+                sb.send_keys("/html/body/div[10]/div/form/div/input", video_url, timeout=10)
+                while True:
+                    sb.click("/html/body/div[10]/div/form/div/div/button")
+                    sb.sleep(1)
+                    try:
+                        sb.click(".wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2")
+                        print("Successfully sent views!")
+                        return
+                    except Exception:
+                        sb.sleep(3)
+
+            if hearts:
+                sb.click(".t-hearts-button", timeout=30)
+                sb.send_keys("/html/body/div[8]/div/form/div/input", video_url, timeout=10)
+                while True:
+                    sb.click("/html/body/div[8]/div/form/div/div/button")
+                    sb.sleep(1)
+                    try:
+                        sb.click(".wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2")
+                        print("Successfully sent hearts!")
+                        return
+                    except Exception:
+                        sb.sleep(3)
 
     def change_proxy(self):
 
@@ -45,13 +60,19 @@ class Zefoy():
         self.proxy = f""
 
 
+# Set mode to 0 for views, 1 for hearts
+hearts = 1
+
+
 def run():
-
     # Run 10 times
-
     for i in range(10):
-        zefoy = Zefoy()
-        zefoy.main()
+        try:
+            zefoy = Zefoy()
+            zefoy.main()
+        except Exception as err:
+            print("An error occured:")
+            print(err)
 
 
 if __name__ == "__main__":
