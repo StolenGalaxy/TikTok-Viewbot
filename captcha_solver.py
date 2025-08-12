@@ -1,8 +1,11 @@
 from openai import OpenAI
 from pydantic import BaseModel
 from dotenv import load_dotenv
-
-import cv2
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from PIL import Image
+import os
 
 
 class ResponseFormat(BaseModel):
@@ -12,18 +15,41 @@ class ResponseFormat(BaseModel):
 class CaptchaSolver:
     def __init__(self):
         load_dotenv()
+        self.image_path = "temp_image.png"
         self.client = OpenAI()
 
-    def create_file(self, path) -> str:
-        with open(path, "rb") as file_content:
+    def solve_captcha(self, sb):
+        self.sb = sb
+        self.save_captcha()
+
+        captcha_answer = self.get_answer()
+
+        os.remove(self.image_path)
+
+        print("Entering captcha:", captcha_answer)
+
+        self.sb.send_keys("#captchatoken", captcha_answer)
+
+        self.sb.click(".submit-captcha")
+
+    def save_captcha(self):
+        captcha = WebDriverWait(self.sb, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
+        print("Attempting to solve captcha")
+
+        captcha.screenshot(self.image_path)
+        image = Image.open(self.image_path)
+        image_cropped = image.crop((0, 54, image.width, 107))
+        image_cropped.save(self.image_path)
+
+    def create_file(self) -> str:
+        with open(self.image_path, "rb") as file_content:
             result = self.client.files.create(
                 file=file_content,
                 purpose="vision",
             )
             return result.id
 
-    def solve_captcha(self, path) -> str:
-        self.remove_lines(path)
+    def get_answer(self) -> str:
         response = self.client.responses.parse(
             model="o3",
             input=[
@@ -41,7 +67,7 @@ class CaptchaSolver:
                     "content": [
                         {
                             "type": "input_image",
-                            "file_id": self.create_file(path),
+                            "file_id": self.create_file(),
                         },
                         ],
                 }
@@ -52,16 +78,3 @@ class CaptchaSolver:
         print(response)
         answer = response["output"][1]["content"][0]["parsed"]["word"]
         return answer
-
-    def remove_lines(self, path):
-        # ChatGPT wrote this to remove the black lines in the captchas
-        img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-        _, binary = cv2.threshold(img, 200, 255, cv2.THRESH_BINARY_INV)
-
-        horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (40, 1))
-
-        detected_lines = cv2.morphologyEx(binary, cv2.MORPH_OPEN, horizontal_kernel, iterations=2)
-
-        result = cv2.inpaint(img, detected_lines, 3, cv2.INPAINT_TELEA)
-
-        cv2.imwrite(path, result)
