@@ -8,6 +8,7 @@ How to use
 If you want the captchas to be solved automatically:
     1. Rename .env.template to .env and enter your OpenAI Api Key
     2. Run Zefoy() with auto_captcha = True
+    It usually costs about $0.01 per captcha
 
 If you want to use proxies to bypass the wait time:
     1. You will have to edit the change_proxy() function to set self.proxy to one of your proxies
