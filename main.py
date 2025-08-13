@@ -25,7 +25,7 @@ class Zefoy():
 
         with SB(chromium_arg="--disable-notifications", proxy=self.proxy, uc=True, binary_location=r"chrome-win64\chrome.exe", extension_dir="adblock") as sb:
             # This is done to give the adblock extension time to install
-            sb.get("https://google.com")
+            sb.get("https://www.webpagetest.org/blank.html")
             sb.sleep(6)
             sb.get("https://zefoy.com/")
 
@@ -46,9 +46,10 @@ class Zefoy():
             try:
                 sb.send_keys(specific_identifiers.url_input, video_url, timeout=10)
                 correct_captcha_count += 1
+                print(f"Correct captcha entered | Total correct captchas: {correct_captcha_count}")
             except Exception:
-                print("Incorrect captcha entered")
                 incorrect_captcha_count += 1
+                print(f"Incorrect captcha entered | Total incorrect captchas: {incorrect_captcha_count}")
 
             while True:
                 sb.click(specific_identifiers.search_button)
@@ -57,7 +58,7 @@ class Zefoy():
                 try:
                     sb.click(general_identifiers.send_button)
                     sb.sleep(1)
-                    print("Likely sent successfully.")
+                    print("Completed (probably) successfully")
                     return
                 except Exception:
                     sb.sleep(3)
@@ -72,16 +73,20 @@ class Zefoy():
 # Set mode to 0 for views, 1 for hearts
 hearts = 1
 
+# The number of times to attempt sending views/hearts
+runs = 100
+
 
 def run():
     # Run 10 times
-    for i in range(100):
+    for i in range(runs):
         try:
             zefoy = Zefoy()
             zefoy.main()
         except Exception as err:
             print("An error occured:")
             print(err)
+    print(f"Completed {runs} runs")
 
 
 if __name__ == "__main__":
