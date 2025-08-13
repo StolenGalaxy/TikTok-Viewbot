@@ -61,18 +61,23 @@ class Zefoy():
 
             sb.send_keys(specific_identifiers.url_input, video_url, timeout=10)
 
+            search_count = 0
             while True:
                 sb.click(specific_identifiers.search_button)
+                sb.sleep(10)
+
+                search_count += 1
                 if sb.is_element_visible(general_identifiers.send_button):
                     sb.sleep(1)
                     self.attribute_count = sb.find_element(general_identifiers.send_button).text
 
                     print(f"Current view/heart count: {self.attribute_count}")
                     sb.click(general_identifiers.send_button)
-                    sb.sleep(1)
-                    return
-                else:
                     sb.sleep(3)
+                    return
+                elif search_count > 75:
+                    print("Run appears to have gotten trapped. Restarting.")
+                    return
 
     def change_proxy(self):
 
@@ -81,24 +86,22 @@ class Zefoy():
         self.proxy = f""
 
 
-# Set mode to 0 for views, 1 for hearts
-hearts = 1
-
-# The number of times to attempt sending views/hearts
-runs = 100
-
-zefoy = Zefoy()
-
-
 def run():
     # Run 10 times
     for i in range(1, runs + 1):
+        print(f"-----------------Start of run {i}/{runs}-----------------")
         try:
             zefoy.main()
         except Exception as err:
             print(f"An error occured:\n{err}")
-        print(f"Completed run {i}/{runs}")
 
 
 if __name__ == "__main__":
+    # Set mode to 0 for views, 1 for hearts
+    hearts = 1
+
+    # The number of times to attempt sending views/hearts
+    runs = 100
+
+    zefoy = Zefoy()
     run()

@@ -2,3 +2,4 @@ chrome-win64/
 .env
 __pycache__/
 downloaded_files/
+temp_image.png
