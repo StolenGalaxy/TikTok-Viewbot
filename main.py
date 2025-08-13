@@ -47,13 +47,13 @@ class Zefoy():
                 self.correct_captcha_count += 1
 
                 captcha_accuracy = (self.correct_captcha_count / (self.correct_captcha_count + self.incorrect_captcha_count)) * 100
-                print(f"Correct captcha entered | Total correct captchas: {self.correct_captcha_count} | Captcha accuracy: {captcha_accuracy}")
+                print(f"Correct captcha entered | Total correct captchas: {self.correct_captcha_count} | Captcha accuracy: {captcha_accuracy}%")
 
             except Exception:
                 self.incorrect_captcha_count += 1
 
                 captcha_accuracy = (self.correct_captcha_count / (self.correct_captcha_count + self.incorrect_captcha_count)) * 100
-                print(f"Incorrect captcha entered | Total incorrect captchas: {self.incorrect_captcha_count} | Captcha accuracy: {captcha_accuracy}")
+                print(f"Incorrect captcha entered | Total incorrect captchas: {self.incorrect_captcha_count} | Captcha accuracy: {captcha_accuracy}%")
                 failed = True
 
             if failed:
