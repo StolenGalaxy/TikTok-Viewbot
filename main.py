@@ -41,15 +41,23 @@ class Zefoy():
 
             general_identifiers = GeneralIdentifiers()
 
-            sb.click(specific_identifiers.category_button)
-
+            failed = False
             try:
-                sb.send_keys(specific_identifiers.url_input, video_url, timeout=10)
+                sb.click(specific_identifiers.category_button)
                 correct_captcha_count += 1
                 print(f"Correct captcha entered | Total correct captchas: {correct_captcha_count}")
+
             except Exception:
                 incorrect_captcha_count += 1
                 print(f"Incorrect captcha entered | Total incorrect captchas: {incorrect_captcha_count}")
+                failed = True
+            captcha_accuracy = (correct_captcha_count / (correct_captcha_count + incorrect_captcha_count)) * 100
+            print(f"Captcha accuracy so far: {captcha_accuracy}%")
+
+            if failed:
+                return
+
+            sb.send_keys(specific_identifiers.url_input, video_url, timeout=10)
 
             while True:
                 sb.click(specific_identifiers.search_button)
@@ -79,14 +87,14 @@ runs = 100
 
 def run():
     # Run 10 times
-    for i in range(runs):
+    for i in range(1, runs + 1):
         try:
             zefoy = Zefoy()
             zefoy.main()
         except Exception as err:
             print("An error occured:")
             print(err)
-    print(f"Completed {runs} runs")
+        print(f"Completed run {i}/{runs}")
 
 
 if __name__ == "__main__":
