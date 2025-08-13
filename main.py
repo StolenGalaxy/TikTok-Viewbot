@@ -3,6 +3,8 @@ from random import randint
 
 from captcha_solver import CaptchaSolver
 
+from identifiers import GeneralIdentifiers, ViewsIdentifiers, HeartsIdentifiers
+
 # Set the url to your TikTok video here
 video_url = ""
 
@@ -12,14 +14,19 @@ class Zefoy():
         self.auto_captcha = auto_captcha
         self.proxy = None
         self.captcha_solver = CaptchaSolver()
+
         if use_proxy:
             self.change_proxy()
 
     def main(self):
+
+        correct_captcha_count = 0
+        incorrect_captcha_count = 0
+
         with SB(chromium_arg="--disable-notifications", proxy=self.proxy, uc=True, binary_location=r"chrome-win64\chrome.exe", extension_dir="adblock") as sb:
             # This is done to give the adblock extension time to install
             sb.get("https://google.com")
-            sb.sleep(3)
+            sb.sleep(6)
             sb.get("https://zefoy.com/")
 
             # Solve captcha
@@ -28,30 +35,32 @@ class Zefoy():
                 self.captcha_solver.solve_captcha(sb)
 
             if not hearts:
-                sb.click(".t-views-button", timeout=30)
-                sb.send_keys("/html/body/div[10]/div/form/div/input", video_url, timeout=10)
-                while True:
-                    sb.click("/html/body/div[10]/div/form/div/div/button")
-                    sb.sleep(1)
-                    try:
-                        sb.click(".wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2")
-                        print("Successfully sent views!")
-                        return
-                    except Exception:
-                        sb.sleep(3)
-
+                specific_identifiers = ViewsIdentifiers()
             if hearts:
-                sb.click(".t-hearts-button", timeout=30)
-                sb.send_keys("/html/body/div[8]/div/form/div/input", video_url, timeout=10)
-                while True:
-                    sb.click("/html/body/div[8]/div/form/div/div/button")
+                specific_identifiers = HeartsIdentifiers()
+
+            general_identifiers = GeneralIdentifiers()
+
+            sb.click(specific_identifiers.category_button)
+
+            try:
+                sb.send_keys(specific_identifiers.url_input, video_url, timeout=10)
+                correct_captcha_count += 1
+            except Exception:
+                print("Incorrect captcha entered")
+                incorrect_captcha_count += 1
+
+            while True:
+                sb.click(specific_identifiers.search_button)
+                sb.sleep(1)
+
+                try:
+                    sb.click(general_identifiers.send_button)
                     sb.sleep(1)
-                    try:
-                        sb.click(".wbutton.btn.btn-dark.rounded-0.font-weight-bold.p-2")
-                        print("Successfully sent hearts!")
-                        return
-                    except Exception:
-                        sb.sleep(3)
+                    print("Likely sent successfully.")
+                    return
+                except Exception:
+                    sb.sleep(3)
 
     def change_proxy(self):
 
@@ -66,7 +75,7 @@ hearts = 1
 
 def run():
     # Run 10 times
-    for i in range(10):
+    for i in range(100):
         try:
             zefoy = Zefoy()
             zefoy.main()

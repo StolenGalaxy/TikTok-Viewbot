@@ -1,11 +1,10 @@
 from openai import OpenAI
 from pydantic import BaseModel
 from dotenv import load_dotenv
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from PIL import Image
 import os
+
+from identifiers import CaptchaIdentifiers
 
 
 class ResponseFormat(BaseModel):
@@ -18,6 +17,8 @@ class CaptchaSolver:
         self.image_path = "temp_image.png"
         self.client = OpenAI()
 
+        self.identifiers = CaptchaIdentifiers()
+
     def solve_captcha(self, sb):
         self.sb = sb
         self.save_captcha()
@@ -28,12 +29,13 @@ class CaptchaSolver:
 
         print("Entering captcha:", captcha_answer)
 
-        self.sb.send_keys("#captchatoken", captcha_answer)
+        self.sb.send_keys(self.identifiers.captcha_input, captcha_answer)
 
-        self.sb.click(".submit-captcha")
+        self.sb.click(self.identifiers.submit_button)
 
     def save_captcha(self):
-        captcha = WebDriverWait(self.sb, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "img-thumbnail.card-img-top.border-0")))
+        captcha = self.sb.find_element(self.identifiers.captcha_image)
+        # captcha = WebDriverWait(self.sb, 30).until(EC.presence_of_element_located((By.CLASS_NAME, self.identifiers.captcha_image)))
         print("Attempting to solve captcha")
 
         captcha.screenshot(self.image_path)
